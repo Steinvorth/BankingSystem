@@ -5,13 +5,16 @@ from dbSetup import SetupDB
 # Main Class
 class Main:
     def __init__(self):
-        self.connection = sqlite3.connect("db/DataBase.sqlite")
+        self.connection = sqlite3.connect(
+            "db/DataBase.sqlite"
+        )  # this command creates the database file if it doesn't exist, and also connects to it.
+
+        self.db = SetupDB()  # db setup instance
 
     def ConnectDB(self):
         # Connect to the database
-        self.db = SetupDB(self.connection)
-        self.db.createTables()
-        self.db.CreateAdmin()
+        self.db.createTables(self.connection)
+        self.db.CreateAdmin(self.connection)
 
     def Start(self):
         self.ConnectDB()
