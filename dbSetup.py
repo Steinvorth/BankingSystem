@@ -51,19 +51,30 @@ class SetupDB:
         except Exception as e:
             print(f"Error with database: {e}")
 
-    def CreateUserAccounts(self, conn):
+    def CreateUsers(self, conn):
         # This method creates 3 user accounts in the database. These accounts will be used to use and test the application.
         try:
-            user1 = conn.execute(
-                "Select * From users where username = 'user1'"
-            ).fetchone()  # if this select comes back empty, then we create the user. This is a way to check if the user is already in the db, so we don't create it again.
+            users = conn.execute(
+                "Select * From users where username IN ('Joe', 'Mary', 'Fred')"
+            ).fetchall()  # if this select comes back empty, then we create the user. This is a way to check if the user is already in the db, so we don't create it again.
 
-            if user1 is None:
+            if not users:
                 conn.execute(
                     "INSERT INTO users (username, password, email, role) VALUES ('Joe', 'Heart', 'joeheart@gmail.com', 'user')",
-                    "INSERT INTO users (username, password, email, role) VALUES ('Mary', 'Johnson', 'maryj@gmail.com', 'user')",
-                    "INSERT INTO users (username, password, email, role) VALUES ('Fred', 'Green', 'fgreen@gmail.com','user')",
                 )
+
+                conn.execute(
+                    "INSERT INTO users (username, password, email, role) VALUES ('Mary', 'Johnson', 'maryj@gmail.com', 'user')"
+                )
+
+                conn.execute(
+                    "INSERT INTO users (username, password, email, role) VALUES ('Fred', 'Green', 'fgreen@gmail.com','user')"
+                )
+
+                conn.commit()
+                print("User accounts created")
+            else:
+                print("User accounts already exist")
 
         except Exception as e:
             print(f"Error with database: {e}")

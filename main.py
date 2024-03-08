@@ -15,6 +15,7 @@ class Main:
         # Connect to the database
         self.db.createTables(self.connection)
         self.db.CreateAdmin(self.connection)
+        self.db.CreateUsers(self.connection)
 
     def Start(self):
         self.ConnectDB()
