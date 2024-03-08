@@ -7,25 +7,32 @@ class SetupDB:
     def createTables(self, conn):
         # This method creates the tables in the database file.
         try:
-            conn.execute(
-                "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, password TEXT NOT NULL, email TEXT NOT NULL, role TEXT NOT NULL)"
-            )
+            tables = conn.execute(
+                "Select name FROM sqlite_master WHERE type='table' AND name IN ('users', 'Accounts', 'Transactions')"
+            ).fetchall()
 
-            print("Table users created")
+            if not tables:
+                conn.execute(
+                    "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, password TEXT NOT NULL, email TEXT NOT NULL, role TEXT NOT NULL)"
+                )
 
-            conn.execute(
-                "CREATE TABLE IF NOT EXISTS Accounts (id INTEGER PRIMARY KEY AUTOINCREMENT, accName TEXT NOT NULL, balance REAL NOT NULL, transactions INTEGER NOT NULL)"
-            )
+                print("Table users created")
 
-            print("Table Accounts created")
+                conn.execute(
+                    "CREATE TABLE IF NOT EXISTS Accounts (id INTEGER PRIMARY KEY AUTOINCREMENT, accName TEXT NOT NULL, balance REAL NOT NULL, transactions INTEGER NOT NULL)"
+                )
 
-            conn.execute(
-                "CREATE TABLE IF NOT EXISTS Transactions (id INTEGER PRIMARY KEY AUTOINCREMENT, Transaction_id INTEGER NOT NULL, account_id INTEGER NOT NULL, amount INTEGER NOT NULL, date TEXT NOT NULL)"
-            )
+                print("Table Accounts created")
 
-            print("Table Transactions created")
+                conn.execute(
+                    "CREATE TABLE IF NOT EXISTS Transactions (id INTEGER PRIMARY KEY AUTOINCREMENT, Transaction_id INTEGER NOT NULL, account_id INTEGER NOT NULL, amount INTEGER NOT NULL, date TEXT NOT NULL)"
+                )
 
-            print("Database created")
+                print("Table Transactions created")
+
+                print("Database created")
+            else:
+                print("Tables already exist")
 
         except Exception as e:
             print(f"Error with database: {e}")
