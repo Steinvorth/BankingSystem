@@ -47,7 +47,7 @@ class SetupDB:
                 conn.commit()
 
             else:
-                pass
+                print("Admin user already exists")
         except Exception as e:
             print(f"Error with database: {e}")
 
@@ -75,6 +75,34 @@ class SetupDB:
                 print("User accounts created")
             else:
                 print("User accounts already exist")
+
+        except Exception as e:
+            print(f"Error with database: {e}")
+
+    def CreateAccounts(self, conn):
+        # This method creates 3 accounts in the database. These accounts will be used to use and test the application.
+        try:
+            accounts = conn.execute(
+                "Select * From Accounts where accName IN ('acc_jh098', 'acc_mj765', 'acc_fg432')"
+            ).fetchall()  # if this select comes back empty, then we create the account. This is a way to check if the account is already in the db, so we don't create it again.
+
+            if not accounts:
+                conn.execute(
+                    "INSERT INTO Accounts (accName, balance, transactions) VALUES ('acc_jh098', 50000, 0)"
+                )
+
+                conn.execute(
+                    "INSERT INTO Accounts (accName, balance, transactions) VALUES ('acc_mj765', 12000, 0)"
+                )
+
+                conn.execute(
+                    "INSERT INTO Accounts (accName, balance, transactions) VALUES ('acc_fg432', 3800, 0)"
+                )
+
+                conn.commit()
+                print("Accounts created")
+            else:
+                print("Accounts already exist")
 
         except Exception as e:
             print(f"Error with database: {e}")

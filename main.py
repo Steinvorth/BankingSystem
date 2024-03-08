@@ -16,6 +16,7 @@ class Main:
         self.db.createTables(self.connection)
         self.db.CreateAdmin(self.connection)
         self.db.CreateUsers(self.connection)
+        self.db.CreateAccounts(self.connection)
 
     def Start(self):
         self.ConnectDB()
