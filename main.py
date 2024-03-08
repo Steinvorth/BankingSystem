@@ -1,21 +1,17 @@
 import sqlite3
 from dbSetup import SetupDB
-from dbConnection import dbConnection
 
 
 # Main Class
 class Main:
     def __init__(self):
-        self.connection = None
-
-        # DB Class Instance
-        self.db = SetupDB()
-
-    def ConnectDB(self):
         self.connection = sqlite3.connect("db/DataBase.sqlite")
 
-        self.db.createDB(self.connection)
-        self.db.createTables(self.connection)
+    def ConnectDB(self):
+        # Connect to the database
+        self.db = SetupDB(self.connection)
+        self.db.createTables()
+        self.db.CreateAdmin()
 
     def Start(self):
         self.ConnectDB()
